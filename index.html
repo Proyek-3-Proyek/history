@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order History</title>
+    <link rel="stylesheet" href="./../../../dist/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  </head>
+  <body class="body_primary">
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-font-owesome"></i>
+        <a href="./index.html">SHOJU</a>
+      </div>
+      <div class="menu">
+        <div class="menu-links">
+          <a href="./../../../index.html"
+            >Home <i class="i-home fi fi-rr-home"></i
+          ></a>
+          <a href="./../katalog/index.html"
+            >Belanja <i class="i-belanja fi fi-rr-shopping-bag"></i
+          ></a>
+          <a href="#">Contact <i class="i-contact fi fi-rr-phone-call"></i></a>
+          <a href="./../history/index.html"
+            >history <i class="fa-solid fa-clock-rotate-left"></i
+          ></a>
+        </div>
+        <div class="profil">
+          <!-- Konten tombol akan diperbarui oleh JavaScript -->
+        </div>
+      </div>
+      <div class="menu-btn">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl w-full p-6 mx-auto">
+      <h1 class="text-2xl font-bold text-white mb-6 text-center">
+        Riwayat Pesanan
+      </h1>
+
+      <div class="overflow-hidden bg-white shadow-md rounded-lg">
+        <table class="w-full border-collapse border border-gray-200">
+          <!-- Header -->
+          <thead class="bg-gray-100 rounded-t-lg">
+            <tr>
+              <th
+                class="text-center align-middle px-6 py-4 border border-gray-200 text-gray-600 font-medium"
+              >
+                Transaction ID
+              </th>
+              <th
+                class="text-center align-middle px-6 py-4 border border-gray-200 text-gray-600 font-medium"
+              >
+                Product
+              </th>
+              <th
+                class="text-center align-middle px-6 py-4 border border-gray-200 text-gray-600 font-medium"
+              >
+                Jumlah
+              </th>
+              <th
+                class="text-center align-middle px-6 py-4 border border-gray-200 text-gray-600 font-medium"
+              >
+                Total Harga
+              </th>
+              <th
+                class="text-center align-middle px-6 py-4 border border-gray-200 text-gray-600 font-medium"
+              >
+                Status
+              </th>
+              <th
+                class="text-center align-middle px-6 py-4 border border-gray-200 text-gray-600 font-medium"
+              >
+                Aksi
+              </th>
+              <th
+                class="text-center align-middle px-6 py-4 border border-gray-200 text-gray-600 font-medium"
+              >
+                Tanggal & Waktu
+              </th>
+            </tr>
+          </thead>
+          <!-- Body -->
+          <tbody id="orderHistory" class="divide-y divide-gray-200">
+            <!-- Data akan dimuat di sini -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <script src="./../../../assets/js/history.js"></script>
+  </body>
+</html>
