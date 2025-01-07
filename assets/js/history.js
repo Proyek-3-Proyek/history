@@ -105,7 +105,7 @@ async function fetchTransactionByToken() {
       text: "Silakan login terlebih dahulu untuk melihat riwayat transaksi.",
       confirmButtonText: "Login",
     }).then(() => {
-      window.location.href = "/tokline.github.io/src/page/auth/login.html"; // Redirect ke halaman login
+      window.location.href = "/login"; // Redirect ke halaman login
     });
     return;
   }
@@ -115,7 +115,7 @@ async function fetchTransactionByToken() {
     const decodedToken = parseJwt(token);
     console.log("Decoded Token:", decodedToken); // Debug token
 
-    const userId = decodedToken.id; // Pastikan menggunakan atribut "id" dari token
+    const userId = decodedToken.id_user; // Pastikan menggunakan atribut "id" dari token
     console.log("User ID dari Token:", userId); // Debug userId
 
     if (typeof userId === "undefined" || userId === null) {
