@@ -197,17 +197,17 @@ async function fetchTransactionByToken() {
       return;
     }
 
-    // Render data ke dalam bentuk card
+    
     data.forEach((transaction) => {
       const card = `
-        <div class="bg-white shadow-md rounded-lg p-4 mb-4">
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4 flex justify-between items-center">
           <div class="flex items-start">
             <img
               src="${
                 transaction.productImage || "https://via.placeholder.com/80"
               }"
               alt="${transaction.nama_produk}"
-              class="w-20 h-20 rounded-md mr-4"
+              class="w-16 h-16 rounded-md mr-4"
             />
             <div>
               <h2 class="text-lg font-bold text-gray-800">${
@@ -218,7 +218,7 @@ async function fetchTransactionByToken() {
                 transaction.gross_amount
               }</p>
               <p class="text-sm text-gray-600">
-                Status:
+                <span class="font-semibold">Status:</span>
                 <span class="${
                   transaction.status === "paid"
                     ? "text-green-600"
@@ -230,11 +230,11 @@ async function fetchTransactionByToken() {
               ).toLocaleString()}</p>
             </div>
           </div>
-          <div class="mt-4">
+          <div class="text-right">
             <a
               href="${transaction.snap_url}"
               target="_blank"
-              class="text-blue-500 underline"
+              class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
             >
               Lihat Detail
             </a>
