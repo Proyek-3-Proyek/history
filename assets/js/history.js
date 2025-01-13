@@ -158,15 +158,11 @@ async function fetchTransactionByToken() {
   }
 
   try {
-    // Dekode token untuk mendapatkan id
+    // Dekode token untuk mendapatkan ID pengguna
     const decodedToken = parseJwt(token);
-    console.log("Decoded Token:", decodedToken); // Debug token
+    const userId = decodedToken?.id_user;
 
-    const userId = decodedToken.id_user; // Pastikan menggunakan atribut "id" dari token
-    console.log("User ID dari Token:", userId); // Debug userId
-
-    if (typeof userId === "undefined" || userId === null) {
-      console.error("userId tidak ditemukan dalam decodedToken:", decodedToken);
+    if (!userId) {
       Swal.fire({
         icon: "error",
         title: "Kesalahan",
@@ -176,12 +172,10 @@ async function fetchTransactionByToken() {
     }
 
     const apiEndpoint = `https://backend-eight-phi-75.vercel.app/api/payment/transactions/${userId}`;
-    console.log("API Endpoint:", apiEndpoint); // Debug API Endpoint
-
     const response = await fetch(apiEndpoint, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`, // Menyertakan token sebagai header
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
@@ -191,8 +185,6 @@ async function fetchTransactionByToken() {
     }
 
     const data = await response.json();
-    console.log("Data dari API:", data); // Debug respons API
-
     const orderHistory = document.getElementById("orderHistory");
     orderHistory.innerHTML = ""; // Bersihkan konten sebelumnya
 
@@ -205,43 +197,51 @@ async function fetchTransactionByToken() {
       return;
     }
 
+    // Render data ke dalam bentuk card
     data.forEach((transaction) => {
-      const row = `
-        <tr>
-          <td class="text-center px-6 py-4 text-gray-700">${
-            transaction.transaksi_id
-          }</td>
-          <td class="text-center px-6 py-4 text-gray-700">${
-            transaction.nama_produk
-          }</td>
-          <td class="text-center px-6 py-4 text-gray-700">${
-            transaction.jumlah
-          }</td>
-          <td class="text-center px-6 py-4 text-gray-700">${
-            transaction.gross_amount
-          }</td>
-          <td class="text-center px-6 py-4 text-gray-700">
-            <span class="text-xs font-semibold px-2 py-1 rounded-full ${
-              transaction.status === "paid"
-                ? "bg-green-100 text-green-600"
-                : "bg-red-100 text-red-600"
-            }">
-              ${transaction.status}
-            </span>
-          </td>
-          <td class="text-center px-6 py-4 text-gray-700">
-            <a href="${
-              transaction.snap_url
-            }" target="_blank" class="text-blue-500 underline">
+      const card = `
+        <div class="bg-white shadow-md rounded-lg p-4 mb-4">
+          <div class="flex items-start">
+            <img
+              src="${
+                transaction.productImage || "https://via.placeholder.com/80"
+              }"
+              alt="${transaction.nama_produk}"
+              class="w-20 h-20 rounded-md mr-4"
+            />
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">${
+                transaction.nama_produk
+              }</h2>
+              <p class="text-sm text-gray-600">Jumlah: ${transaction.jumlah}</p>
+              <p class="text-sm text-gray-600">Total Harga: Rp${
+                transaction.gross_amount
+              }</p>
+              <p class="text-sm text-gray-600">
+                Status:
+                <span class="${
+                  transaction.status === "paid"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }">${transaction.status}</span>
+              </p>
+              <p class="text-sm text-gray-500">Tanggal: ${new Date(
+                transaction.created_at
+              ).toLocaleString()}</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <a
+              href="${transaction.snap_url}"
+              target="_blank"
+              class="text-blue-500 underline"
+            >
               Lihat Detail
             </a>
-          </td>
-          <td class="text-center px-6 py-4 text-gray-700">${new Date(
-            transaction.created_at
-          ).toLocaleString()}</td>
-        </tr>
+          </div>
+        </div>
       `;
-      orderHistory.innerHTML += row;
+      orderHistory.innerHTML += card;
     });
 
     Swal.fire({
