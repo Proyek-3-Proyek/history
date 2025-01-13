@@ -3,47 +3,86 @@ const apiEndpoint = "https://api.example.com/orders";
 
 async function fetchOrderHistory() {
   try {
-    const response = await fetch(apiEndpoint);
+    const response = await fetch(apiEndpoint); // Ganti `apiEndpoint` dengan endpoint API Anda
     const data = await response.json();
 
     const orderHistory = document.getElementById("orderHistory");
     orderHistory.innerHTML = ""; // Bersihkan konten sebelumnya
 
     data.forEach((order) => {
-      const row = `
-           <tr>
-             <td class="text-center px-6 py-4 text-gray-700">${order.date}</td>
-             <td class="text-center px-6 py-4 text-gray-700 truncate">${
-               order.orderId
-             }</td>
-             <td class="text-center px-6 py-4 text-gray-700">${
-               order.transactionType
-             }</td>
-             <td class="text-center px-6 py-4 text-gray-700">${
-               order.channel
-             }</td>
-             <td class="text-center px-6 py-4 text-gray-700">
-               <span class="text-xs font-semibold px-2 py-1 rounded-full ${
-                 order.status === "Kedaluwarsa"
-                   ? "bg-red-100 text-red-600"
-                   : "bg-green-100 text-green-600"
-               }">
-                 ${order.status}
-               </span>
-             </td>
-             <td class="text-center px-6 py-4 text-gray-700">${
-               order.amount
-             }</td>
-             <td class="text-center px-6 py-4 text-gray-700 truncate">${
-               order.customerEmail
-             }</td>
-           </tr>
-         `;
-      orderHistory.innerHTML += row;
+      const card = `
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4 flex justify-between items-center">
+          <div class="flex items-start">
+            <img
+              src="${order.productImage || "https://via.placeholder.com/80"}"
+              alt="${order.productName}"
+              class="w-16 h-16 rounded-md mr-4"
+            />
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">${
+                order.productName
+              }</h2>
+              <p class="text-sm text-gray-600">Variasi: ${
+                order.variation || "-"
+              }</p>
+              <p class="text-sm text-gray-600">Jumlah: ${order.quantity}</p>
+              <p class="text-sm text-gray-600">
+                <span class="font-semibold">Status:</span> 
+                <span class="${
+                  order.status === "Kedaluwarsa"
+                    ? "text-red-600"
+                    : "text-green-600"
+                }">${order.status}</span>
+              </p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="text-lg font-bold text-gray-800">Rp${order.totalPrice}</p>
+            <button
+              class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              onclick="viewOrderDetails('${order.orderId}', '${
+        order.productName
+      }', '${order.totalPrice}', '${order.status}', '${order.variation}', '${
+        order.quantity
+      }')"
+            >
+              Lihat Detail
+            </button>
+          </div>
+        </div>
+      `;
+      orderHistory.innerHTML += card;
     });
   } catch (error) {
     console.error("Error fetching order history:", error);
   }
+}
+
+function viewOrderDetails(
+  orderId,
+  productName,
+  totalPrice,
+  status,
+  variation,
+  quantity
+) {
+  Swal.fire({
+    title: `<strong>Detail Pesanan</strong>`,
+    html: `
+      <div class="text-left">
+        <p><strong>Nama Produk:</strong> ${productName}</p>
+        <p><strong>Variasi:</strong> ${variation || "-"}</p>
+        <p><strong>Jumlah:</strong> ${quantity}</p>
+        <p><strong>Total Harga:</strong> Rp${totalPrice}</p>
+        <p><strong>Status:</strong> <span class="${
+          status === "Kedaluwarsa" ? "text-red-600" : "text-green-600"
+        }">${status}</span></p>
+      </div>
+    `,
+    icon: "info",
+    confirmButtonText: "Tutup",
+    confirmButtonColor: "#3b82f6",
+  });
 }
 
 // Muat data ketika halaman dimuat
