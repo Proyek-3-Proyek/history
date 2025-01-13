@@ -255,7 +255,7 @@ async function fetchTransactionByToken() {
             target="_blank"
             class="ml-3 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm"
           >
-            Lihat Detail
+            Lihat Status
           </a>
         </div>
       `;
