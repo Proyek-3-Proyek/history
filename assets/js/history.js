@@ -199,12 +199,14 @@ async function fetchTransactionByToken() {
     }
 
     // Fetch semua produk untuk mendapatkan gambar produk
-    const productsResponse = await fetch(
-      "https://backend-eight-phi-75.vercel.app/api/produk/all",
-      {
-        method: "GET",
-      }
-    );
+    const productsResponse = await fetch("https://backend-eight-phi-75.vercel.app/api/produk/all", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`, // Tambahkan token autentikasi
+        "Content-Type": "application/json",
+      },
+    });
+    
 
     if (!productsResponse.ok) {
       throw new Error(`Error fetching products: ${productsResponse.status}`);
