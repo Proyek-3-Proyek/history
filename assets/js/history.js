@@ -171,8 +171,9 @@ async function fetchTransactionByToken() {
       return;
     }
 
-    const apiEndpoint = `https://backend-eight-phi-75.vercel.app/api/payment/transactions/${userId}`;
-    const response = await fetch(apiEndpoint, {
+    // Fetch data transaksi berdasarkan ID pengguna
+    const transactionsEndpoint = `https://backend-eight-phi-75.vercel.app/api/payment/transactions/${userId}`;
+    const response = await fetch(transactionsEndpoint, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -184,11 +185,11 @@ async function fetchTransactionByToken() {
       throw new Error(`Error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const transactions = await response.json();
     const orderHistory = document.getElementById("orderHistory");
     orderHistory.innerHTML = ""; // Bersihkan konten sebelumnya
 
-    if (data.length === 0) {
+    if (transactions.length === 0) {
       Swal.fire({
         icon: "info",
         title: "Tidak Ada Transaksi",
@@ -197,48 +198,65 @@ async function fetchTransactionByToken() {
       return;
     }
 
-    
-    data.forEach((transaction) => {
+    // Fetch semua produk untuk mendapatkan gambar produk
+    const productsResponse = await fetch(
+      "https://backend-eight-phi-75.vercel.app/api/produk/all",
+      {
+        method: "GET",
+      }
+    );
+
+    if (!productsResponse.ok) {
+      throw new Error(`Error fetching products: ${productsResponse.status}`);
+    }
+
+    const products = await productsResponse.json();
+
+    // Map produk berdasarkan ID
+    const productMap = {};
+    products.forEach((product) => {
+      productMap[product.id_produk] = product.gambar;
+    });
+
+    // Render transaksi ke dalam card
+    transactions.forEach((transaction) => {
+      const productImage =
+        productMap[transaction.id_produk] || "https://via.placeholder.com/80";
+
       const card = `
-        <div class="bg-white rounded-lg shadow-md p-4 mb-4 flex justify-between items-center">
-          <div class="flex items-start">
-            <img
-              src="${
-                transaction.productImage || "https://via.placeholder.com/80"
-              }"
-              alt="${transaction.nama_produk}"
-              class="w-16 h-16 rounded-md mr-4"
-            />
-            <div>
-              <h2 class="text-lg font-bold text-gray-800">${
-                transaction.nama_produk
-              }</h2>
-              <p class="text-sm text-gray-600">Jumlah: ${transaction.jumlah}</p>
-              <p class="text-sm text-gray-600">Total Harga: Rp${
-                transaction.gross_amount
-              }</p>
-              <p class="text-sm text-gray-600">
-                <span class="font-semibold">Status:</span>
-                <span class="${
-                  transaction.status === "paid"
-                    ? "text-green-600"
-                    : "text-red-600"
-                }">${transaction.status}</span>
-              </p>
-              <p class="text-sm text-gray-500">Tanggal: ${new Date(
-                transaction.created_at
-              ).toLocaleString()}</p>
-            </div>
+        <div class="bg-white rounded-lg shadow-md p-3 mb-3 flex items-center">
+          <img
+            src="${productImage}"
+            alt="${transaction.nama_produk}"
+            class="w-12 h-12 rounded-md mr-3"
+          />
+          <div class="flex-1">
+            <h2 class="text-base font-bold text-gray-800">${
+              transaction.nama_produk
+            }</h2>
+            <p class="text-sm text-gray-600">Jumlah: ${transaction.jumlah}</p>
+            <p class="text-sm text-gray-600">Total Harga: Rp${
+              transaction.gross_amount
+            }</p>
+            <p class="text-sm text-gray-600">
+              <span class="font-semibold">Status:</span>
+              <span class="${
+                transaction.status === "paid"
+                  ? "text-green-600"
+                  : "text-red-600"
+              }">${transaction.status}</span>
+            </p>
+            <p class="text-sm text-gray-500">Tanggal: ${new Date(
+              transaction.created_at
+            ).toLocaleString()}</p>
           </div>
-          <div class="text-right">
-            <a
-              href="${transaction.snap_url}"
-              target="_blank"
-              class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-            >
-              Lihat Detail
-            </a>
-          </div>
+          <a
+            href="${transaction.snap_url}"
+            target="_blank"
+            class="ml-3 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm"
+          >
+            Lihat Detail
+          </a>
         </div>
       `;
       orderHistory.innerHTML += card;
