@@ -199,14 +199,16 @@ async function fetchTransactionByToken() {
     }
 
     // Fetch semua produk untuk mendapatkan gambar produk
-    const productsResponse = await fetch("https://backend-eight-phi-75.vercel.app/api/produk/all", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`, // Tambahkan token autentikasi
-        "Content-Type": "application/json",
-      },
-    });
-    
+    const productsResponse = await fetch(
+      "https://backend-eight-phi-75.vercel.app/api/produk/all",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // Tambahkan token autentikasi
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!productsResponse.ok) {
       throw new Error(`Error fetching products: ${productsResponse.status}`);
@@ -217,7 +219,7 @@ async function fetchTransactionByToken() {
     // Map produk berdasarkan ID
     const productMap = {};
     products.forEach((product) => {
-      productMap[product.id_produk] = product.gambar;
+      productMap[product.id_produk] = `https://qzbythadanrtksusxdtq.supabase.co/storage/v1/object/public/gambar/${product.gambar}`;
     });
 
     // Render transaksi ke dalam card
