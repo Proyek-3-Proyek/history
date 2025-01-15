@@ -234,7 +234,7 @@ async function fetchTransactionByToken() {
           <img
             src="${productImage}"
             alt="${transaction.nama_produk}"
-            class="w-9 h-9 rounded-md mr-3 p-4"
+            class="w-9 h-9 rounded mr-3 p-4"
           />
           <div class="flex-1">  
             <h2 class="text-lg font-bold text-gray-800 pb-2">${
