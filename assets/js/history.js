@@ -219,7 +219,9 @@ async function fetchTransactionByToken() {
     // Map produk berdasarkan ID
     const productMap = {};
     products.forEach((product) => {
-      productMap[product.id_produk] = `https://qzbythadanrtksusxdtq.supabase.co/storage/v1/object/public/gambar/${product.gambar}`;
+      productMap[
+        product.id_produk
+      ] = `https://qzbythadanrtksusxdtq.supabase.co/storage/v1/object/public/gambar/${product.gambar}`;
     });
 
     // Render transaksi ke dalam card
@@ -232,7 +234,7 @@ async function fetchTransactionByToken() {
           <img
             src="${productImage}"
             alt="${transaction.nama_produk}"
-            class="w-12 h-12 rounded-md mr-3"
+            class="w-12 h-12 rounded-md mr-3 p-4"
           />
           <div class="flex-1">
             <h2 class="text-base font-bold text-gray-800">${
