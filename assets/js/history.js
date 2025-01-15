@@ -236,8 +236,8 @@ async function fetchTransactionByToken() {
             alt="${transaction.nama_produk}"
             class="w-9 h-9 rounded-md mr-3 p-4"
           />
-          <div class="flex-1">
-            <h2 class="text-base font-bold text-gray-800">${
+          <div class="flex-1">  
+            <h2 class="text-lg font-bold text-gray-800 pb-2">${
               transaction.nama_produk
             }</h2>
             <p class="text-sm text-gray-600">Jumlah: ${transaction.jumlah}</p>
