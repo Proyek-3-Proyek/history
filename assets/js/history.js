@@ -18,9 +18,9 @@ async function fetchOrderHistory() {
         <div class="bg-white rounded-lg shadow-md p-4 mb-4 flex justify-between items-center">
           <div class="flex items-start">
             <img
-              src="${order.productImage || "https://via.placeholder.com/80"}"
+              src="${order.productImage || "https://via.placeholder.com/100"}"
               alt="${order.productName}"
-              class="w-16 h-16 rounded-md mr-4"
+              class="product-image"
             />
             <div>
               <h2 class="text-lg font-bold text-gray-800">${
@@ -91,6 +91,17 @@ function viewOrderDetails(
 
 // Muat data ketika halaman dimuat
 window.onload = fetchOrderHistory;
+
+const style = document.createElement("style");
+style.innerHTML = `
+  .product-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover; /* Menyesuaikan gambar tanpa distorsi */
+    border-radius: 8px; /* Opsional: Membuat gambar sedikit membulat */
+  }
+`;
+document.head.appendChild(style);
 
 // ------------------------------------------------------------------------------
 
