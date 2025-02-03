@@ -3,13 +3,17 @@ const apiEndpoint = "https://api.example.com/orders";
 
 async function fetchOrderHistory() {
   try {
-    const response = await fetch(apiEndpoint); // Ganti `apiEndpoint` dengan endpoint API Anda
+    const response = await fetch(apiEndpoint);
     const data = await response.json();
 
     const orderHistory = document.getElementById("orderHistory");
-    orderHistory.innerHTML = ""; // Bersihkan konten sebelumnya
+    orderHistory.innerHTML = "";
 
     data.forEach((order) => {
+      const formattedTotalPrice = `Rp. ${order.totalPrice.toLocaleString(
+        "id-ID"
+      )}`;
+
       const card = `
         <div class="bg-white rounded-lg shadow-md p-4 mb-4 flex justify-between items-center">
           <div class="flex items-start">
@@ -37,12 +41,12 @@ async function fetchOrderHistory() {
             </div>
           </div>
           <div class="text-right">
-            <p class="text-lg font-bold text-gray-800">Rp${order.totalPrice}</p>
+            <p class="text-lg font-bold text-gray-800">${formattedTotalPrice}</p>
             <button
               class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
               onclick="viewOrderDetails('${order.orderId}', '${
         order.productName
-      }', '${order.totalPrice}', '${order.status}', '${order.variation}', '${
+      }', '${formattedTotalPrice}', '${order.status}', '${order.variation}', '${
         order.quantity
       }')"
             >
@@ -73,7 +77,7 @@ function viewOrderDetails(
         <p><strong>Nama Produk:</strong> ${productName}</p>
         <p><strong>Variasi:</strong> ${variation || "-"}</p>
         <p><strong>Jumlah:</strong> ${quantity}</p>
-        <p><strong>Total Harga:</strong> Rp${totalPrice}</p>
+        <p><strong>Total Harga:</strong> ${totalPrice}</p>
         <p><strong>Status:</strong> <span class="${
           status === "Kedaluwarsa" ? "text-red-600" : "text-green-600"
         }">${status}</span></p>
